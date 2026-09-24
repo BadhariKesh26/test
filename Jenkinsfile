@@ -1,0 +1,23 @@
+pipeline {
+    agent any
+    parameters {
+        choice(name: 'ENVIRONMENT', choices: ['dev', 'staging', 'prod'], description: 'Select the deploy environment')
+    }
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/BadhariKesh26/test.git']])
+            }
+        }
+        stage('Show Parameter') {
+            steps {
+                echo "Selected environment: ${params.ENVIRONMENT}"
+            }
+        }
+        stage('Build for Environment') {
+            steps {
+                echo "Building the application for the ${params.ENVIRONMENT} environment..."
+            }
+        }
+    }
+}
